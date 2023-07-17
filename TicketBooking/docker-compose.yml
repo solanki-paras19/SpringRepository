@@ -1,0 +1,23 @@
+services:
+  postgresql:
+           ports:
+              - 5432:5432
+           container_name: postgresql_container
+           image: postgres:14-alpine
+           environment:
+              - POSTGRES_DB=TicketData
+              - POSTGRES_PASSWORD=tiger
+              - POSTGRES_USER=postgres
+           restart: always           
+  app:
+    build: .
+    container_name: ticketbooking_container
+    ports:
+      - 8082:8082
+    environment:
+     - SPRING_DATASOURCE_URL=jdbc:postgresql://postgresql:5432/postgres
+     - SPRING_DATASOURCE_USERNAME=postgres
+     - SPRING_DATASOURCE_PASSWORD=tiger
+    depends_on:
+     - postgresql
+    restart: always
